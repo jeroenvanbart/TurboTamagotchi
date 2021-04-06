@@ -189,10 +189,10 @@ class Bubble {
     }
 }
 
-// const bubbleSound1 = document.createElement("audio");
-// bubbleSound1.src = "./audio/mixkit-water-bubble-1317.wav";
-// const bubbleSound2 = document.createElement("audio");
-// bubbleSound2.src = "./audio/mixkit-cartoon-bubbles-popping-732.wav";
+const bubbleSound1 = document.createElement("audio");
+bubbleSound1.src = "./audio/mixkit-water-bubble-1317.wav";
+const bubbleSound2 = document.createElement("audio");
+bubbleSound2.src = "./audio/mixkit-cartoon-bubbles-popping-732.wav";
 
 
 function handleBubles(){
@@ -210,9 +210,9 @@ function handleBubles(){
                 //add score
                 if (!bubblesArray[i].counted){
                     if (bubblesArray[i].sound == "sound1"){
-                        // bubbleSound1.play();
+                        bubbleSound1.play();
                     }else{
-                        // bubbleSound2.play();
+                        bubbleSound2.play();
                     }
                     score++
                     bubblesArray[i].counted = true;
