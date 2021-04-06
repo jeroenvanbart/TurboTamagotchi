@@ -48,7 +48,7 @@ class Player {
     constructor(){
         this.x = canvas.width/2;
         this.y = canvas.height/2;
-        this.radius = 50;
+        this.radius = 40;
         this.angle = 0;
         this.frameX = 0;
         this.frameY = 0;
@@ -81,7 +81,7 @@ class Player {
         ctx.fillStyle ="red";
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI *2);
-        // ctx.fill();
+        ctx.fill();
         ctx.closePath();
         ctx.save();
         ctx.translate(this.x, this.y);
@@ -104,7 +104,7 @@ const player = new Player();
 
 
 const foodAppleImage = new Image();
-foodAppleImage.src = "./images/apple.png"
+foodAppleImage.src = "./images/orange.png"
 
 
 class Food {
@@ -416,6 +416,14 @@ function progress(width){
     let el = document.getElementById('progress-bar');
     let widthString = width.toString() + "%"
     el.style.width = widthString;
+}
+
+//increase difficulty
+function morePoison(){
+    if (gameFrame % 10000 === 0){
+        poisonAmmount += 100;
+        poisonSpeed += 1;
+    }
 }
 
 //check win
