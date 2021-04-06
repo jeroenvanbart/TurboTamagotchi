@@ -89,6 +89,7 @@ class Player {
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle)
 
+        
         if (this.x >= mouse.x){
             ctx.drawImage(playerLeft, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, 0 -65, 0 -65, this.spriteWidth/4, this.spriteHeight/4);
         } else{
