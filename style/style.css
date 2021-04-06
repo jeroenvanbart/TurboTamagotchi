@@ -26,6 +26,27 @@ body {
     padding-bottom: 20px;
     
 }
+
+#progress-health {
+	background-color: #eee;
+	width: 20rem;
+	height: 2rem;
+	margin-bottom: 0.5rem;
+	box-shadow:
+		-12px -12px 12px 0 rgba(255, 255, 255, 1),
+		12px 12px 12px 0 rgba(0, 0, 0, .08);
+}
+
+#progress-bar {
+	background: linear-gradient(to right, #f10a0a, #e4c412,#16d116);
+	width: 1%;
+    
+	height: 100%;
+	color: #fff;
+	opacity: 1;
+	transition: .5;
+}
+
 #canvas1 {
     width: 800px;
     height: 500px;
