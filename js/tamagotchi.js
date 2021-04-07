@@ -17,6 +17,7 @@ let bomsSpeed = 0.5;
 let bomsAmmount = 150;
 let playerSpeed = 30;
 let gameOver = false;
+let gameWin = false;
 
 const foodArray = [];
 const waterArray = [];
@@ -82,7 +83,6 @@ class Player {
             ctx.moveTo(this.x, this.y);
             ctx.lineTo(mouse.x, mouse.y);
             ctx.stroke();
-
         }
         ctx.fillStyle ="red";
         ctx.beginPath();
@@ -92,6 +92,7 @@ class Player {
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle)
+        
 
         
         if (this.x >= mouse.x){
@@ -100,12 +101,9 @@ class Player {
             ctx.drawImage(playerRight, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, 0 -65, 0 -65, this.spriteWidth/4, this.spriteHeight/4);
         }
         
+        
         ctx.restore(); 
         
-    }
-    playerGameOver(){
-        ctx.drawImage(playerRight, 350, 370,this.spriteWidth /4,this.spriteHeight/4 );
-        this.draw.clearRect();
     }
 }
 
@@ -316,7 +314,11 @@ function handleHeart(){
                     }else{
                         // bubbleSound2.play();
                     }
-                    love++
+                    love+= 1;
+                    // if(love === 50){
+                    //     gameWin = true; 
+                    //     handleGameWin();
+                    // }
                     heartArray[i].counted = true;
                     heartArray.splice(i, 1);
                     i--;  
@@ -391,7 +393,7 @@ function handleBoms(){
                         gameOver =true;
                         handleGameOver();
                     }else if(health > 0){
-                        health -= 10;
+                        health -= 50;
                     }
                     
                     bomsArray[i].counted = true;
@@ -471,9 +473,12 @@ function handleGameOver(){
     ctx.fillStyle ="darkblue";
     ctx.fillText("GameOver, you reached lovepoints:" + love, 140, 250 )
     gameOver = true;
-    player.playerGameOver()
-
 }
+// function handleGameWin(){
+//     ctx.fillStyle ="darkblue";
+//     ctx.fillText("You won, you reached 50 Lovepoints", 140, 250 )
+//     gameWin = true;
+// }
 
 
 
@@ -501,7 +506,8 @@ function animate(){
     
     
     
-    if (!gameOver) requestAnimationFrame(animate);
+if (!gameOver) requestAnimationFrame(animate)
+
     
 
 }
