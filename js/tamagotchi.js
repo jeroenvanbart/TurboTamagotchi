@@ -1,6 +1,5 @@
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
-const container = document.getElementById('container');
 const progressBar = document.getElementById('progress-bar');
 canvas.width = 800;
 canvas.height = 500;
@@ -26,6 +25,9 @@ const bomsArray = [];
 
 
 let health = 99;
+
+// draw board class
+
 
 //mouse position
 let canvasPosition = canvas.getBoundingClientRect();
@@ -314,7 +316,7 @@ function handleHeart(){
                     }else{
                         // bubbleSound2.play();
                     }
-                    love+= 1;
+                    love += 1;
                     // if(love === 50){
                     //     gameWin = true; 
                     //     handleGameWin();
@@ -393,7 +395,7 @@ function handleBoms(){
                         gameOver =true;
                         handleGameOver();
                     }else if(health > 0){
-                        health -= 50;
+                        health -= 5;
                     }
                     
                     bomsArray[i].counted = true;
@@ -470,8 +472,8 @@ function moreLove(){
 //gameover
 
 function handleGameOver(){
-    ctx.fillStyle ="darkblue";
-    ctx.fillText("GameOver, you reached lovepoints:" + love, 140, 250 )
+    ctx.fillStyle ="black";
+    ctx.fillText("GameOver, you reached lovepoints:" + love, 280, 50 )
     gameOver = true;
 }
 // function handleGameWin(){
@@ -491,6 +493,8 @@ function handleGameOver(){
 function animate(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     handleBackground();
+    player.draw();
+    player.update();
     handleFood();
     handleHeart();
     handleWater();
@@ -501,6 +505,7 @@ function animate(){
     gameFrame++;
     player.update();
     player.draw();
+    
     ctx.fillStyle ="black";
     ctx.fillText(`Love:` + love, 10, 50);
     
@@ -511,8 +516,26 @@ if (!gameOver) requestAnimationFrame(animate)
     
 
 }
-animate();
-// createGameOverScreen()
+
+function startGame(){
+    ctx.fillStyle ="darkblue";
+    ctx.fillText("All i need is food, drinks and love.", 160, 150 );
+    ctx.fillText("Give me plenty of love and you will win.", 130, 200 );
+    ctx.fillText("Avoid getting hit by spiky boms.", 160, 250 );
+    ctx.fillText("They cost health and love", 250, 300 );
+    let start = document.getElementById("startbutton").addEventListener("click", function(){
+        animate();
+    });
+}
+function resetGame(){
+    let reset = document.getElementById("resetbutton").addEventListener("click", function(){
+        
+        
+    });
+}
+startGame()
+resetGame()
+
 
 
 window.addEventListener("resize", function(){

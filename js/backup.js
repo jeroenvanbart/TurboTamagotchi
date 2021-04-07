@@ -1,24 +1,33 @@
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
+const progressBar = document.getElementById('progress-bar');
 canvas.width = 800;
 canvas.height = 500;
 
-let score = 0;
+let love = 0;
 let gameFrame = 0;
-ctx.font = '50px Georgia';
+ctx.font = '30px Georgia';
 let gameSpeed = 1;
 let objectSpeed = 0.2;
 let objectAmmount = 250;
-let poisonSpeed = 0.5;
-let poisonAmmount = 150;
+let loveSpeed = 0.5;
+let loveAmmount = 150;
+let bomsSpeed = 0.5;
+let bomsAmmount = 150;
 let playerSpeed = 30;
+let gameOver = false;
+let gameWin = false;
 
 const foodArray = [];
 const waterArray = [];
 const heartArray = [];
-const poisonArray = [];
+const bomsArray = [];
 
-let health = 100;
+
+let health = 99;
+
+// draw board class
+
 
 //mouse position
 let canvasPosition = canvas.getBoundingClientRect();
@@ -48,7 +57,7 @@ class Player {
     constructor(){
         this.x = canvas.width/2;
         this.y = canvas.height/2;
-        this.radius = 50;
+        this.radius = 40;
         this.angle = 0;
         this.frameX = 0;
         this.frameY = 0;
@@ -76,7 +85,6 @@ class Player {
             ctx.moveTo(this.x, this.y);
             ctx.lineTo(mouse.x, mouse.y);
             ctx.stroke();
-
         }
         ctx.fillStyle ="red";
         ctx.beginPath();
@@ -86,14 +94,17 @@ class Player {
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle)
+        
 
+        
         if (this.x >= mouse.x){
             ctx.drawImage(playerLeft, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, 0 -65, 0 -65, this.spriteWidth/4, this.spriteHeight/4);
         } else{
             ctx.drawImage(playerRight, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, 0 -65, 0 -65, this.spriteWidth/4, this.spriteHeight/4);
         }
-        ctx.restore();
-
+        
+        
+        ctx.restore(); 
         
     }
 }
@@ -104,7 +115,11 @@ const player = new Player();
 
 
 const foodAppleImage = new Image();
-foodAppleImage.src = "./images/apple.png"
+foodAppleImage.src = "./images/orange.png"
+const bubbleSound1 = document.createElement("audio");
+bubbleSound1.src = "./audio/mixkit-water-bubble-1317.wav";
+const bubbleSound2 = document.createElement("audio");
+bubbleSound2.src = "./audio/mixkit-cartoon-bubbles-popping-732.wav";
 
 
 class Food {
@@ -140,10 +155,7 @@ class Food {
     }
 }
 
-const bubbleSound1 = document.createElement("audio");
-bubbleSound1.src = "./audio/mixkit-water-bubble-1317.wav";
-const bubbleSound2 = document.createElement("audio");
-bubbleSound2.src = "./audio/mixkit-cartoon-bubbles-popping-732.wav";
+
 
 
 function handleFood(){
@@ -165,8 +177,7 @@ function handleFood(){
                     }else{
                         // bubbleSound2.play();
                     }
-                    score++
-                    if(health <100){health +=1;}
+                    if(health <100){health +=2;}
                     foodArray[i].counted = true;
                     foodArray.splice(i, 1);
                     i--;  
@@ -178,6 +189,10 @@ function handleFood(){
 
 const waterImage = new Image();
 waterImage.src = "./images/water_ball_05.png"
+// const bubbleSound1 = document.createElement("audio");
+// bubbleSound1.src = "./audio/mixkit-water-bubble-1317.wav";
+// const bubbleSound2 = document.createElement("audio");
+// bubbleSound2.src = "./audio/mixkit-cartoon-bubbles-popping-732.wav";
 
 class Water {
     constructor(){
@@ -210,10 +225,7 @@ class Water {
     }
 }
 
-// const bubbleSound1 = document.createElement("audio");
-// bubbleSound1.src = "./audio/mixkit-water-bubble-1317.wav";
-// const bubbleSound2 = document.createElement("audio");
-// bubbleSound2.src = "./audio/mixkit-cartoon-bubbles-popping-732.wav";
+
 
 
 function handleWater(){
@@ -235,8 +247,7 @@ function handleWater(){
                     }else{
                         // bubbleSound2.play();
                     }
-                    score++
-                    if(health <100){health +=1;}
+                    if(health <100){health +=2;}
                     waterArray[i].counted = true;
                     waterArray.splice(i, 1);
                     i--;  
@@ -247,13 +258,17 @@ function handleWater(){
 
 const heartImage = new Image();
 heartImage.src = "./images/face_on_heart.png"
+// const bubbleSound1 = document.createElement("audio");
+// bubbleSound1.src = "./audio/mixkit-water-bubble-1317.wav";
+// const bubbleSound2 = document.createElement("audio");
+// bubbleSound2.src = "./audio/mixkit-cartoon-bubbles-popping-732.wav";
 
 class Heart {
     constructor(){
         this.x = Math.random() * canvas.width;
         this.y = canvas.height - canvas.height - 100;
         this.radius = 50;
-        this.speed = Math.random() * 2 + objectSpeed;
+        this.speed = Math.random() * 2 + loveSpeed;
         this.distance;
         this.counted = false;
         this.sound = Math.random() <= 0.5 ? "sound1" : "sound2";
@@ -279,14 +294,11 @@ class Heart {
     }
 }
 
-// const bubbleSound1 = document.createElement("audio");
-// bubbleSound1.src = "./audio/mixkit-water-bubble-1317.wav";
-// const bubbleSound2 = document.createElement("audio");
-// bubbleSound2.src = "./audio/mixkit-cartoon-bubbles-popping-732.wav";
+
 
 
 function handleHeart(){
-    if (gameFrame % objectAmmount == 0){
+    if (gameFrame % loveAmmount == 0){
         heartArray.push(new Heart());
     }
     for (let i=0; i < heartArray.length; i++){
@@ -304,8 +316,11 @@ function handleHeart(){
                     }else{
                         // bubbleSound2.play();
                     }
-                    score++
-                    if(health <100){health +=1;}
+                    love+= 1;
+                    // if(love === 50){
+                    //     gameWin = true; 
+                    //     handleGameWin();
+                    // }
                     heartArray[i].counted = true;
                     heartArray.splice(i, 1);
                     i--;  
@@ -314,22 +329,26 @@ function handleHeart(){
     }
 }
 
-const poisonImage = new Image();
-poisonImage.src = "./images/spiky_ball.png"
+const bomsImage = new Image();
+bomsImage.src = "./images/spiky_ball.png"
+// const bubbleSound1 = document.createElement("audio");
+// bubbleSound1.src = "./audio/mixkit-water-bubble-1317.wav";
+// const bubbleSound2 = document.createElement("audio");
+// bubbleSound2.src = "./audio/mixkit-cartoon-bubbles-popping-732.wav";
 
-class Poison{
+class Boms{
     constructor(){
         this.x = Math.random() * canvas.width;
-        this.y = canvas.height - canvas.height - 100;
+        this.y = canvas.height + 100;
         this.radius = 50;
-        this.speed = Math.random() * 2 + poisonSpeed;
+        this.speed = Math.random() * 2 + bomsSpeed;
         this.distance;
         this.counted = false;
         // this.sound = Math.random() <= 0.5 ? "sound1" : "sound2";
 
     }
     update(){
-        this.y += this.speed;
+        this.y -= this.speed;
         // moves bubbles up
         const dx = this.x - player.x;
         const dy = this.y - player.y;
@@ -342,48 +361,54 @@ class Poison{
         // ctx.fill();
         ctx.closePath();
         // ctx.stroke();
-        ctx.drawImage(poisonImage,this.x -30,this.y -28, this.radius *1.2, this.radius * 1.2);
+        ctx.drawImage(bomsImage,this.x -30,this.y -28, this.radius *1.2, this.radius * 1.2);
         ctx.restore();
 
     }
 }
 
-// const bubbleSound1 = document.createElement("audio");
-// bubbleSound1.src = "./audio/mixkit-water-bubble-1317.wav";
-// const bubbleSound2 = document.createElement("audio");
-// bubbleSound2.src = "./audio/mixkit-cartoon-bubbles-popping-732.wav";
 
 
-function handlePoison(){
-    if (gameFrame % poisonAmmount == 0){
-        poisonArray.push(new Poison());
+
+function handleBoms(){
+    if (gameFrame % bomsAmmount == 0){
+        bomsArray.push(new Boms());
     }
-    for (let i=0; i < poisonArray.length; i++){
-        poisonArray[i].update();
-        poisonArray[i].draw();      
-         if (poisonArray[i].y < 0 - poisonArray[i].radius * 2){
-            poisonArray.splice(i, 1);
+    for (let i=0; i < bomsArray.length; i++){
+        bomsArray[i].update();
+        bomsArray[i].draw();      
+         if (bomsArray[i].y < 0 - bomsArray[i].radius * 2){
+            bomsArray.splice(i, 1);
             i--;
-        }else if (poisonArray[i].distance < poisonArray[i].radius + player.radius){
+        }else if (bomsArray[i].distance < bomsArray[i].radius + player.radius){
                 //  detect collision
                 //add score
-                if (!poisonArray[i].counted){
+                if (!bomsArray[i].counted){
                     // if (poisonArray[i].sound == "sound1"){
                     //     // bubbleSound1.play();
                     // }else{
                     //     // bubbleSound2.play();
                     // }
-                    if (score>0) {score -=1};
-                    if(health >-1){health -=5;}
-                    poisonArray[i].counted = true;
-                    poisonArray.splice(i, 1);
+                    if (love>0) {love -=1};
+                    if(health <= 0){
+                        health = 0;
+                        gameOver =true;
+                        handleGameOver();
+                    }else if(health > 0){
+                        health -= 50;
+                    }
+                    
+                    bomsArray[i].counted = true;
+                    bomsArray.splice(i, 1);
                     i--;  
                 }                                   
-        }      
-    }
+        }   
+    }  
 }
 
 
+
+console.log(health)
 
 //repeating background
 const background = new Image();
@@ -413,12 +438,51 @@ function handleBackground(){
 //progress bar
 
 function progress(width){
-    let el = document.getElementById('progress-bar');
+    if (health < 20){
+        progressBar.id ='progress-bar3';
+    }else if(health < 40){
+        progressBar.id ='progress-bar2';   
+        }else {progressBar.id ='progress-bar';
+    }
     let widthString = width.toString() + "%"
-    el.style.width = widthString;
+    progressBar.style.width = widthString;
+}
+
+//increase difficulty
+function moreBoms(){
+    if (gameFrame % 1000 === 0 && gameFrame < 10001){
+        if (bomsAmmount < 0){bomsAmmount -= 10;};
+        bomsAmmount -= 10;
+        bomsSpeed += 0.5;
+    }
+}
+
+function moreLove(){
+    if (gameFrame % 1000 === 0 && gameFrame < 10001){
+        if (loveAmmount < 0){loveAmmount -= 10;};
+        loveAmmount -= 10;
+        loveSpeed += 0.2;
+        
+        
+    }
 }
 
 //check win
+
+//gameover
+
+function handleGameOver(){
+    ctx.fillStyle ="darkblue";
+    ctx.fillText("GameOver, you reached lovepoints:" + love, 140, 250 )
+    gameOver = true;
+}
+// function handleGameWin(){
+//     ctx.fillStyle ="darkblue";
+//     ctx.fillText("You won, you reached 50 Lovepoints", 140, 250 )
+//     gameWin = true;
+// }
+
+
 
 
 
@@ -428,21 +492,30 @@ function progress(width){
 
 function animate(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    handleBackground()
-    handleFood()
-    handleHeart()
-    handleWater()
-    handlePoison()
+    handleBackground();
+    handleFood();
+    handleHeart();
+    handleWater();
+    handleBoms();
+    moreBoms();
+    moreLove();
+    progress(health);
+    gameFrame++;
     player.update();
     player.draw();
-    ctx.fillStyle ="black"
-    ctx.fillText(`Love:` + score, 10, 50);
-    gameFrame++;
-    requestAnimationFrame(animate);
-    progress(health)
+    ctx.fillStyle ="black";
+    ctx.fillText(`Love:` + love, 10, 50);
+    
+    
+    
+if (!gameOver) requestAnimationFrame(animate)
+
+    
 
 }
 animate();
+// createGameOverScreen()
+
 
 window.addEventListener("resize", function(){
     canvasPosition = canvas.getBoundingClientRect();
