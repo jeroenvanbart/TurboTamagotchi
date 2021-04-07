@@ -447,8 +447,3 @@ animate();
 window.addEventListener("resize", function(){
     canvasPosition = canvas.getBoundingClientRect();
 })
-
-
-array.forEach(element => {
-    
-});

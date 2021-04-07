@@ -1,11 +1,13 @@
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
+const container = document.getElementById('container');
+const progressBar = document.getElementById('progress-bar');
 canvas.width = 800;
 canvas.height = 500;
 
 let love = 0;
 let gameFrame = 0;
-ctx.font = '50px Georgia';
+ctx.font = '30px Georgia';
 let gameSpeed = 1;
 let objectSpeed = 0.2;
 let objectAmmount = 250;
@@ -14,13 +16,15 @@ let loveAmmount = 150;
 let bomsSpeed = 0.5;
 let bomsAmmount = 150;
 let playerSpeed = 30;
+let gameOver = false;
 
 const foodArray = [];
 const waterArray = [];
 const heartArray = [];
 const bomsArray = [];
 
-let health = 100;
+
+let health = 99;
 
 //mouse position
 let canvasPosition = canvas.getBoundingClientRect();
@@ -95,9 +99,13 @@ class Player {
         } else{
             ctx.drawImage(playerRight, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, 0 -65, 0 -65, this.spriteWidth/4, this.spriteHeight/4);
         }
-        ctx.restore();
-
         
+        ctx.restore(); 
+        
+    }
+    playerGameOver(){
+        ctx.drawImage(playerRight, 350, 370,this.spriteWidth /4,this.spriteHeight/4 );
+        this.draw.clearRect();
     }
 }
 
@@ -378,18 +386,25 @@ function handleBoms(){
                     //     // bubbleSound2.play();
                     // }
                     if (love>0) {love -=1};
-                    if(health >-1){health -=5;}
+                    if(health <= 0){
+                        health = 0;
+                        gameOver =true;
+                        handleGameOver();
+                    }else if(health > 0){
+                        health -= 10;
+                    }
+                    
                     bomsArray[i].counted = true;
                     bomsArray.splice(i, 1);
                     i--;  
                 }                                   
-        }      
-    }
+        }   
+    }  
 }
 
 
 
-
+console.log(health)
 
 //repeating background
 const background = new Image();
@@ -419,9 +434,14 @@ function handleBackground(){
 //progress bar
 
 function progress(width){
-    let el = document.getElementById('progress-bar');
+    if (health < 20){
+        progressBar.id ='progress-bar3';
+    }else if(health < 40){
+        progressBar.id ='progress-bar2';   
+        }else {progressBar.id ='progress-bar';
+    }
     let widthString = width.toString() + "%"
-    el.style.width = widthString;
+    progressBar.style.width = widthString;
 }
 
 //increase difficulty
@@ -430,7 +450,6 @@ function moreBoms(){
         if (bomsAmmount < 0){bomsAmmount -= 10;};
         bomsAmmount -= 10;
         bomsSpeed += 0.5;
-        console.log(gameFrame)
     }
 }
 
@@ -440,10 +459,23 @@ function moreLove(){
         loveAmmount -= 10;
         loveSpeed += 0.2;
         
+        
     }
 }
 
 //check win
+
+//gameover
+
+function handleGameOver(){
+    ctx.fillStyle ="darkblue";
+    ctx.fillText("GameOver, you reached lovepoints:" + love, 140, 250 )
+    gameOver = true;
+    player.playerGameOver()
+
+}
+
+
 
 
 
@@ -460,16 +492,22 @@ function animate(){
     handleBoms();
     moreBoms();
     moreLove();
+    progress(health);
+    gameFrame++;
     player.update();
     player.draw();
     ctx.fillStyle ="black";
     ctx.fillText(`Love:` + love, 10, 50);
-    gameFrame++;
-    requestAnimationFrame(animate);
-    progress(health);
+    
+    
+    
+    if (!gameOver) requestAnimationFrame(animate);
+    
 
 }
 animate();
+// createGameOverScreen()
+
 
 window.addEventListener("resize", function(){
     canvasPosition = canvas.getBoundingClientRect();
