@@ -17,6 +17,7 @@ let bomsAmmount = 150;
 let playerSpeed = 30;
 let gameOver = false;
 let gameWin = false;
+let gameStop =false;
 
 const foodArray = [];
 const waterArray = [];
@@ -94,6 +95,7 @@ class Player {
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle)
+
         
 
         
@@ -102,12 +104,11 @@ class Player {
         } else{
             ctx.drawImage(playerRight, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, 0 -65, 0 -65, this.spriteWidth/4, this.spriteHeight/4);
         }
-        
-        
         ctx.restore(); 
-        
     }
+    
 }
+
 
 const player = new Player();
 
@@ -317,10 +318,10 @@ function handleHeart(){
                         // bubbleSound2.play();
                     }
                     love += 1;
-                    // if(love === 50){
-                    //     gameWin = true; 
-                    //     handleGameWin();
-                    // }
+                    if(love === 100){
+                        gameWin = true; 
+                        handleGameWin()
+                    }
                     heartArray[i].counted = true;
                     heartArray.splice(i, 1);
                     i--;  
@@ -395,7 +396,7 @@ function handleBoms(){
                         gameOver =true;
                         handleGameOver();
                     }else if(health > 0){
-                        health -= 5;
+                        health -= 10;
                     }
                     
                     bomsArray[i].counted = true;
@@ -470,17 +471,22 @@ function moreLove(){
 //check win
 
 //gameover
+function gameFreeze(){
+    if (gameOver === true || gameWin ===true){
+        gameStop = true;
+    }
+}
 
 function handleGameOver(){
     ctx.fillStyle ="black";
-    ctx.fillText("GameOver, you reached lovepoints:" + love, 280, 50 )
+    ctx.fillText("GAME OVER, you reached lovepoints:" + love, 220, 50 )
     gameOver = true;
 }
-// function handleGameWin(){
-//     ctx.fillStyle ="darkblue";
-//     ctx.fillText("You won, you reached 50 Lovepoints", 140, 250 )
-//     gameWin = true;
-// }
+function handleGameWin(){
+    ctx.fillStyle ="black";
+    ctx.fillText("YOU WON, you reached " + love + " Lovepoints", 220, 50 )
+    gameWin = true;
+}
 
 
 
@@ -505,13 +511,15 @@ function animate(){
     gameFrame++;
     player.update();
     player.draw();
+    gameFreeze()
+    
     
     ctx.fillStyle ="black";
     ctx.fillText(`Love:` + love, 10, 50);
     
     
     
-if (!gameOver) requestAnimationFrame(animate)
+if (!gameStop) requestAnimationFrame(animate)
 
     
 
