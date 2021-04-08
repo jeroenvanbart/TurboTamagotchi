@@ -458,7 +458,7 @@ function startGame(){
     ctx.fillText("Click your mouse to navigate me.", 190, 150 );
     ctx.fillText("Give me food and water to increase my health.", 110, 200 );
     ctx.fillText("Give me "+ lovePointsNeeded + " hearts and you will win.", 174, 250 );
-    ctx.fillText("Avoid getting hit by spiky bombs,", 195, 300 );
+    ctx.fillText("Avoid getting hit by spiky bombs,", 194, 300 );
     ctx.fillText("since they cost health and love.", 200, 350 );
     let start = document.getElementById("startbutton").addEventListener("click", function(){
         animate();
