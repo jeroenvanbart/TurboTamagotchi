@@ -58,6 +58,8 @@ const heartSound2 = document.createElement("audio");
 heartSound2.src = "./audio/mixkit-bubbly-achievement-tone-3193.wav";
 const bomsSound1 = document.createElement("audio");
 bomsSound1.src = "./audio/mixkit-shot-light-explosion-1682.wav";
+const bomsSound2 = document.createElement("audio");
+bomsSound2.src = "./audio/mixkit-shot-light-explosion-1682.wav";
 const gameOverSound = document.createElement("audio");
 gameOverSound.src = "./audio/mixkit-retro-game-over-1947.wav";
 const gameWinSound = document.createElement("audio");
@@ -303,7 +305,7 @@ class Boms{
         this.speed = Math.random() * 2 + bomsSpeed;
         this.distance;
         this.counted = false;
-        this.sound = "sound1";
+        this.sound = Math.random() <= 0.5 ? "sound1" : "sound2";
     }
     update(){
         this.y -= this.speed;
@@ -332,7 +334,11 @@ function handleBoms(){
             i--;
         }else if (bomsArray[i].distance < bomsArray[i].radius + player.radius){
                 if (!bomsArray[i].counted){
-                    bomsSound1.play();
+                    if (bomsArray[i].sound == "sound1"){
+                        bomsSound1.play();
+                    }else{
+                        bomsSound2.play();
+                    }
                     if (love>0) {love -=1};
                     if(health <= 0){
                         health = 0;
