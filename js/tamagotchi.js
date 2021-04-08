@@ -55,7 +55,7 @@ waterSound2.src = "./audio/mixkit-cartoon-bubbles-popping-732.wav";
 const heartSound1 = document.createElement("audio");
 heartSound1.src = "./audio/mixkit-little-double-kiss-2189.wav";
 const heartSound2 = document.createElement("audio");
-heartSound2.src = "./audio/mixkit-bubbly-achievement-tone-3193.wav";
+heartSound2.src = "./audio/mixkit-little-double-kiss-2189.wav";
 const bomsSound1 = document.createElement("audio");
 bomsSound1.src = "./audio/mixkit-shot-light-explosion-1682.wav";
 const bomsSound2 = document.createElement("audio");
@@ -254,7 +254,7 @@ class Heart {
         this.speed = Math.random() * 2 + loveSpeed;
         this.distance;
         this.counted = false;
-        this.sound = "sound1";
+        this.sound = Math.random() <= 0.5 ? "sound1" : "sound2";
 
     }
     update(){
@@ -285,7 +285,11 @@ function handleHeart(){
             i--;
         }else if (heartArray[i].distance < heartArray[i].radius + player.radius){
                 if (!heartArray[i].counted){
+                    if (heartArray[i].sound == "sound1"){
                         heartSound1.play();
+                    }else{
+                        heartSound2.play();
+                    }
                     love += 1;
                     if(love === lovePointsNeeded){
                         gameWin = true; 
