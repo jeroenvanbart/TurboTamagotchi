@@ -110,3 +110,6 @@ body {
     color: rgb(4, 61, 99);;
     font-size: 2em;
 }
+.slidecontainer {
+    margin-top: 5px;
+}
