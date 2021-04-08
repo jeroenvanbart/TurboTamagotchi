@@ -428,12 +428,15 @@ function animate(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     handleBackground();
     gameFreeze() 
-    if (!gameStop)handleFood();
-    if (!gameStop)handleHeart();
-    if (!gameStop)handleWater();
-    if (!gameStop)handleBoms();
-    if (!gameStop)moreBoms();
-    if (!gameStop)moreLove();
+    
+    if (!gameStop){handleFood();
+    handleHeart();
+    handleWater();
+    handleBoms();
+    moreBoms();
+    moreLove();
+    }
+
     progress(health);
     handleGameOver()
     handleGameWin()
