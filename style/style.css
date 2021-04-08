@@ -34,9 +34,7 @@ body {
 	margin-bottom: 0.5rem;
     border: 4px solid rgb(4, 61, 99);
     border-radius: 5px;
-	box-shadow:
-		-12px -12px 12px 0 rgba(255, 255, 255, 1),
-		12px 12px 12px 0 rgba(0, 0, 0, .08);
+	box-shadow: -12px -12px 12px 0 rgba(255, 255, 255, 1),12px 12px 12px 0 rgba(0, 0, 0, .08);
 
 }
 
@@ -111,5 +109,6 @@ body {
     font-size: 2em;
 }
 .slidecontainer {
-    margin-top: 5px;
+    margin-top: 35px;
+    text-align: center;
 }

@@ -18,7 +18,7 @@ let bomsSpeed = 0.5;
 let bomsAmmount = 150;
 let playerSpeed = 30;
 
-let lovePointsNeeded = 50;
+let lovePointsNeeded = 20;
 let bomCountMinHealth = 10;
 
 let gameOver = false;
@@ -287,7 +287,6 @@ function handleHeart(){
                     love += 1;
                     if(love === lovePointsNeeded){
                         gameWin = true; 
-                        handleGameWin()
                     }
                     heartArray[i].counted = true;
                     heartArray.splice(i, 1);
@@ -338,7 +337,6 @@ function handleBoms(){
                     if(health <= 0){
                         health = 0;
                         gameOver =true;
-                        handleGameOver();
                     }else if(health > 0){
                         health -= bomCountMinHealth;
                     }
@@ -393,18 +391,23 @@ function gameFreeze(){
 }
 
 function handleGameOver(){
+    if (gameOver === true){
     ctx.fillStyle ="black";
     ctx.fillText("GAME OVER, you reached lovepoints:" + love, 220, 50 );
     gameOverSound.play();
     gameOver = true;
+    }
 }
 
 function handleGameWin(){
+    if (gameWin === true){
     ctx.fillStyle ="black";
     ctx.fillText("YOU WON, you reached " + love + " Lovepoints", 220, 50 );
     gameWinSound.play();
     gameWin = true;
+    }
 }
+
 function playBackgroundMusic(){
     if (gameStop === false) {backgroundSound.play().loop;
     }else{backgroundSound.pause()}
@@ -414,18 +417,20 @@ function playBackgroundMusic(){
 function animate(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     handleBackground();
-    if (!gameWin)handleFood();
-    if (!gameWin)handleHeart();
-    if (!gameWin)handleWater();
-    if (!gameWin)handleBoms();
-    if (!gameWin)moreBoms();
-    if (!gameWin)moreLove();
+    gameFreeze() 
+    if (!gameStop)handleFood();
+    if (!gameStop)handleHeart();
+    if (!gameStop)handleWater();
+    if (!gameStop)handleBoms();
+    if (!gameStop)moreBoms();
+    if (!gameStop)moreLove();
     progress(health);
+    handleGameOver()
+    handleGameWin()
     gameFrame++;
     if (!gameOver) player.update();
     if (!gameOver) player.draw();
     player.Gameover ()
-    gameFreeze()    
     ctx.fillStyle ="black";
     ctx.fillText(`Love:` + love, 10, 50);
     playBackgroundMusic();
