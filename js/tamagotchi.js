@@ -142,7 +142,12 @@ class Player {
         if (gameOver === true){
             ctx.drawImage(playerRight, 350 , 350, this.spriteWidth/4, this.spriteHeight/4);
         }
-    }   
+    } 
+    Gamewin (){
+        if (gameWin === true){
+            ctx.drawImage(playerLeft, 350 , 350, this.spriteWidth/4, this.spriteHeight/4);
+        }
+    }    
 }
 const player = new Player();
 class Food {
@@ -403,7 +408,7 @@ function gameFreeze(){
 function handleGameOver(){
     if (gameOver === true){
     ctx.fillStyle ="black";
-    ctx.fillText("GAME OVER, you reached lovepoints:" + love, 220, 50 );
+    ctx.fillText("GAME OVER!", 315, 250 );
     gameOverSound.play();
     gameOver = true;
     }
@@ -412,7 +417,7 @@ function handleGameOver(){
 function handleGameWin(){
     if (gameWin === true){
     ctx.fillStyle ="black";
-    ctx.fillText("YOU WON, you reached " + love + " Lovepoints", 220, 50 );
+    ctx.fillText("YOU WON!, you reached " + love + " Lovepoints", 145, 250 );
     gameWinSound.play();
     gameWin = true;
     }
@@ -441,9 +446,14 @@ function animate(){
     handleGameOver()
     handleGameWin()
     gameFrame++;
-    if (!gameOver) player.update();
-    if (!gameOver) player.draw();
+    
+    if (!gameStop){ 
+        player.update();
+        player.draw()
+    };
+
     player.Gameover ()
+    player.Gamewin ()
     ctx.fillStyle ="black";
     ctx.fillText(`Love:` + love, 10, 50);
     playBackgroundMusic();
