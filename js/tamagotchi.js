@@ -455,11 +455,12 @@ resetGame()
 
 function startGame(){
     ctx.fillStyle ="darkblue";
-    ctx.fillText("Click your mouse to navigate me.", 190, 150 );
-    ctx.fillText("Give me food and water to increase my health.", 110, 200 );
-    ctx.fillText("Give me "+ lovePointsNeeded + " hearts and you will win.", 174, 250 );
-    ctx.fillText("Avoid getting hit by spiky bombs,", 194, 300 );
-    ctx.fillText("since they cost health and love.", 200, 350 );
+    ctx.fillText("Click your mouse to navigate me.", 190, 100 );
+    ctx.fillText("Give me food and water to increase my health.", 110, 150 );
+    ctx.fillText("Give me "+ lovePointsNeeded + " hearts and you will win.", 174, 200 );
+    ctx.fillText("Avoid getting hit by spiky bombs,", 194, 250 );
+    ctx.fillText("since they cost health and love.", 210, 300 );
+    ctx.fillText("I am to cute to die!", 280, 350 );
     let start = document.getElementById("startbutton").addEventListener("click", function(){
         animate();
     }, {once: true});
