@@ -18,7 +18,7 @@ let bomsSpeed = 0.5;
 let bomsAmmount = 150;
 let playerSpeed = 30;
 
-let lovePointsNeeded = 20;
+let lovePointsNeeded = 50;
 let bomCountMinHealth = 10;
 
 let gameOver = false;
