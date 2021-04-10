@@ -18,7 +18,7 @@ let bomsSpeed = 0.5;
 let bomsAmmount = 150;
 let playerSpeed = 30;
 
-let lovePointsNeeded = 75;
+let lovePointsNeeded = 50;
 let bomCountMinHealth = 10;
 
 let gameOver = false;
@@ -470,7 +470,7 @@ function startGame(){
     ctx.fillText("Give me "+ lovePointsNeeded + " hearts and you will win.", 174, 200 );
     ctx.fillText("Avoid getting hit by spiky bombs,", 194, 250 );
     ctx.fillText("since they cost health and love.", 210, 300 );
-    ctx.fillText("I am to cute to die!", 280, 350 );
+    ctx.fillText("I am too cute to die!", 278, 350 );
     let start = document.getElementById("startbutton").addEventListener("click", function(){
         animate();
     }, {once: true});
