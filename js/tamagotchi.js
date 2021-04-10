@@ -162,7 +162,6 @@ class Food {
     }
     update(){
         this.y -= this.speed;
-        // moves bubbles up
         const dx = this.x - player.x;
         const dy = this.y - player.y;
         this.distance = Math.sqrt(dx * dx + dy * dy);
